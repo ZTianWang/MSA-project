@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input, Space, message } from 'antd';
 import { doLogin } from '../../api/login';
 import './login.scss'
 
-function Index() {
+function Login() {
 
     async function login(value: Login) {
         // doLogin(value).then((res) => {
@@ -83,4 +83,4 @@ function Index() {
     )
 }
 
-export default Index;
+export default Login;
