@@ -3,6 +3,7 @@
  */
 
 import axios from "axios";
+import { message } from 'antd'
 
 const request = axios.create({
     timeout: 5000,
@@ -19,9 +20,12 @@ request.interceptors.request.use((req) => {
 
 // respose拦截器 + error处理
 request.interceptors.response.use((res) => {
-    console.log(res.status);
+    console.log("Response Code:", res.status);
     return res.data;
 }, (err) => {
-    console.log(err);
+    console.log("response-------", err.message);
+    message.error(err.message)
     return Promise.reject(err);
 })
+
+export default request;
