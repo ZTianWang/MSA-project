@@ -2,9 +2,11 @@ import React from 'react'
 import { Button, Checkbox, Form, Input, Space, message } from 'antd';
 import { doLogin } from '../../api/login';
 import './login.scss'
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
 
+    const navigate = useNavigate();
     async function login(value: Login) {
         // doLogin(value).then((res) => {
         //     if (res.success) {
@@ -17,6 +19,7 @@ function Login() {
             const res = await doLogin(value);
             if (res.success) {
                 localStorage.setItem('token', res.data.token);
+                navigate('/');
             } else {
                 message.error(res.errorMessage);
             }
