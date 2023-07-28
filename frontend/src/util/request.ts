@@ -13,17 +13,20 @@ const request = axios.create({
 request.interceptors.request.use((req) => {
     const token = localStorage.getItem("token");
     if (token) {
-        req.headers.set('authorization', token);
+        // req.headers.set('authorization', token);
+        req.headers.set("authorization", `Bearer ${token}`);
     }
     return req;
 });
 
 // respose拦截器 + error处理
 request.interceptors.response.use((res) => {
-    console.log("Response Code:", res.status);
     return res.data;
 }, (err) => {
-    console.log("response-------", err.message);
+    // 从全局中获取AppLayout中的hook方法登出
+    if (err.response.status === 401) {
+        window.logout();
+    }
     message.error(err.message)
     return Promise.reject(err);
 })
