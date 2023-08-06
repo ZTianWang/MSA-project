@@ -13,33 +13,7 @@ import { DownOutlined } from '@ant-design/icons';
 
 const { Header, Content, Sider } = Layout;
 
-const headeItems = ['管理', '推广', '仓库'];
-
-// 定义侧边栏内容: 非集中管理的方式
-// const siderItems: MenuProps['items'] = [
-//     {
-//         key: 'userMenu',
-//         icon: <UserOutlined />,
-//         label: 'User',
-//         children: [
-//             {
-//                 key: '/user/list',
-//                 label: '用户管理',
-//             },
-//         ]
-//     },
-//     {
-//         key: 'itemMenu',
-//         icon: <ShoppingCartOutlined />,
-//         label: 'Item',
-//         children: [
-//             {
-//                 key: '/role/list',
-//                 label: '商品管理',
-//             }
-//         ]
-//     }
-// ]
+const headeItems = ['Management', 'Promotion', 'Warehouse'];
 
 export default function AppLayout({ children }: { children?: ReactNode }) {
 
@@ -58,21 +32,21 @@ export default function AppLayout({ children }: { children?: ReactNode }) {
     // 通过useLocation() 获取当前的url
     const location = useLocation();
 
-    useEffect(() => {
-        // 登录检查
-        let hasToken = checkToken();
+    // useEffect(() => {
+    //     // 登录检查
+    //     let hasToken = checkToken();
 
-        // 巧妙方法：让非组件（.ts文件）调用hooks--在全局环境声明一个方法，在组件对其中赋值
-        // 让登出方法全局使用,方便让request拦截器调用
-        window.logout = () => {
-            localStorage.clear();
-            navigate('/login');
-        }
+    //     // 巧妙方法：让非组件（.ts文件）调用hooks--在全局环境声明一个方法，在组件对其中赋值
+    //     // 让登出方法全局使用,方便让request拦截器调用
+    //     window.logout = () => {
+    //         localStorage.clear();
+    //         navigate('/login');
+    //     }
 
-        if (hasToken) {
-            dispatch(getCurrentInfo());
-        }
-    }, [])
+    //     if (hasToken) {
+    //         dispatch(getCurrentInfo());
+    //     }
+    // }, [])
 
     // 设置菜单栏动态高亮的方式
     useEffect(() => {
@@ -86,14 +60,14 @@ export default function AppLayout({ children }: { children?: ReactNode }) {
 
 
     // 检查token是否存在
-    function checkToken() {
-        const token = localStorage.getItem("token");
-        if (!token && location.pathname !== "/login") {
-            message.error('Please login!');
-            navigate("/login");
-        }
-        return true;
-    }
+    // function checkToken() {
+    //     const token = localStorage.getItem("token");
+    //     if (!token && location.pathname !== "/login") {
+    //         message.error('Please login!');
+    //         navigate("/login");
+    //     }
+    //     return true;
+    // }
 
     // 通过定义好的路由表动态地：
     // 生成侧边栏
@@ -198,8 +172,8 @@ export default function AppLayout({ children }: { children?: ReactNode }) {
                 <Layout style={{ padding: '0 24px 24px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>Home</Breadcrumb.Item>
+                        <Breadcrumb.Item>Items</Breadcrumb.Item>
                         <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
                     </Breadcrumb>
                     <Content style={{ padding: '0 24px', minHeight: 280 }}>
                         {children}

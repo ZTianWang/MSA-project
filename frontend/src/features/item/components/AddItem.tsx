@@ -1,14 +1,14 @@
 import { Form, Input, Modal, message } from 'antd';
 import React, { useEffect } from 'react'
-import { createUser } from '../../../api/user';
 import { useForm } from 'antd/es/form/Form';
+import { createItem } from '../../../api/item';
 
 interface Iprops {
     isModalOpen: boolean;
     closeModal(refresh?: boolean): Promise<void>;
 }
 
-function AddUser({ isModalOpen, closeModal }: Iprops) {
+function AddItem({ isModalOpen, closeModal }: Iprops) {
 
     const [form] = useForm();
 
@@ -18,15 +18,14 @@ function AddUser({ isModalOpen, closeModal }: Iprops) {
         }
     }, [isModalOpen])
 
-
     function handleOk() {
         form.submit();
     }
 
-    async function addUser(user: User) {
-        const res = await createUser(user);
+    async function addItem(item: Item) {
+        const res = await createItem(item);
         if (res.success) {
-            message.success('Success!');
+            message.success(res.message);
             await closeModal(true);
         } else {
             message.error(res.message);
@@ -35,67 +34,68 @@ function AddUser({ isModalOpen, closeModal }: Iprops) {
 
     return (
         <Modal
-            title='Add User'
+            title='Add Item'
             open={isModalOpen}
             onOk={handleOk}
             onCancel={async () => await closeModal()}
             okText='Add'
         >
             <Form
-                form={form}     // 获取表单的引用
+                form={form}
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 16 }}
                 style={{ maxWidth: 600 }}
-                onFinish={addUser}
+                onFinish={addItem}
             >
 
                 <Form.Item
-                    label="用户名"
-                    name={"username"}
+                    label="Name"
+                    name={"name"}
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your username!'
+                            message: 'Please input your item name!'
                         }
                     ]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="邮箱"
-                    name={"email"}
+                    label="Price"
+                    name={"price"}
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your email!'
+                            message: 'Please input Price!'
                         },
-                        {
-                            type: 'email',
-                            message: 'Illegal email format!'
-                        }
                     ]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="密码"
-                    name={"password"}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!'
-                        },
-                        {
-                            min: 6,
-                            message: 'Password at least 6 digits!'
-                        }
-                    ]}
+                    label="Description"
+                    name={"description"}
+                    rules={[]}
                 >
-                    <Input.Password />
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Stock Quantity"
+                    name={"stockQuantity"}
+                    rules={[]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Sold Quantity"
+                    name={"soldQuantity"}
+                    rules={[]}
+                >
+                    <Input />
                 </Form.Item>
             </Form>
         </Modal>
     )
 }
 
-export default AddUser
+export default AddItem

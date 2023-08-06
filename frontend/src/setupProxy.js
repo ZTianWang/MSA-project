@@ -9,4 +9,11 @@ module.exports = function (app) {
             changeOrigin: true,
         })
     );
+    app.use(
+        "/products",
+        createProxyMiddleware({
+            target: "http://localhost:5258",
+            changeOrigin: true,
+        })
+    )
 };

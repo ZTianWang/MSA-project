@@ -55,24 +55,24 @@ function User() {
             key: 'id',
         },
         {
-            title: '姓名',
+            title: 'Name',
             dataIndex: 'username',
             key: 'username',
         },
         {
-            title: '邮箱',
+            title: 'Email',
             dataIndex: 'email',
             key: 'email',
         },
         {
-            title: '管理',
+            title: 'Management',
             render(value, record, index) {
                 return (
                     <Space>
                         <Button
                             type='primary'
                             onClick={() => handleClickEdit(record)}
-                        >编辑</Button>
+                        >Edit</Button>
                         <DeleteUser id={record.id} onDelete={onDelete} />
                     </Space>
                 )

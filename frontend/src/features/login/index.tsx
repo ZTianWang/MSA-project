@@ -15,13 +15,14 @@ function Login() {
         //         message.error(res.errorMessage);
         //     }
         // })
+
         try {
             const res = await doLogin(value);
             if (res.success) {
                 localStorage.setItem('token', res.data.token);
                 navigate('/');
             } else {
-                message.error(res.errorMessage);
+                message.error(res.message);
             }
         } catch (error) {
             console.log(error);

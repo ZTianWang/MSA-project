@@ -1,18 +1,18 @@
 import { Button, Popconfirm, message } from 'antd';
 import React from 'react'
-import { deleteUserById } from '../../../api/user';
+import { deleteItemById } from '../../../api/item';
 
 interface IProps {
     id: number;
     onDelete(id: number): void;
 }
 
-function DeleteUser({ id, onDelete }: IProps) {
+function DeleteItem({ id, onDelete }: IProps) {
 
-    async function deleteUser() {
-        const res = await deleteUserById(id);
+    async function deleteItem() {
+        const res = await deleteItemById(id);
         if (res.success) {
-            message.success('Delete Success!');
+            message.success(res.message);
             onDelete(id);
         } else {
             message.error(res.message);
@@ -22,11 +22,12 @@ function DeleteUser({ id, onDelete }: IProps) {
     function cancelHandle() {
         message.info('Cancel.')
     }
+
     return (
         <Popconfirm
-            title='Delete User?'
+            title='Delete Item?'
             onCancel={cancelHandle}
-            onConfirm={deleteUser}
+            onConfirm={deleteItem}
         >
             <Button type='primary' danger>
                 Delete
@@ -35,4 +36,4 @@ function DeleteUser({ id, onDelete }: IProps) {
     )
 }
 
-export default DeleteUser
+export default DeleteItem

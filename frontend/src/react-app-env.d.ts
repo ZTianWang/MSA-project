@@ -6,7 +6,7 @@ declare global {
     // 相应体结构
     interface ResponseSuccess<T = {}> {
         success: boolean;
-        errorMessage?: string;
+        message?: string;
         data: T;
     }
 

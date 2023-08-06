@@ -11,11 +11,11 @@ const request = axios.create({
 
 // request 拦截器
 request.interceptors.request.use((req) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-        // req.headers.set('authorization', token);
-        req.headers.set("authorization", `Bearer ${token}`);
-    }
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //     // req.headers.set('authorization', token);
+    //     req.headers.set("authorization", `Bearer ${token}`);
+    // }
     return req;
 });
 
@@ -24,9 +24,9 @@ request.interceptors.response.use((res) => {
     return res.data;
 }, (err) => {
     // 从全局中获取AppLayout中的hook方法登出
-    if (err.response.status === 401) {
-        window.logout();
-    }
+    // if (err.response.status === 401) {
+    //     window.logout();
+    // }
     message.error(err.message)
     return Promise.reject(err);
 })
