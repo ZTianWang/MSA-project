@@ -90,14 +90,6 @@ services.AddAuthorization(config =>
 
 var app = builder.Build();
 
-// Setup the static file direction
-app.UseStaticFiles(new StaticFileOptions()
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "StaticFiles")),
-    RequestPath="/static"
-});
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
