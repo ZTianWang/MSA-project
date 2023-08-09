@@ -1,6 +1,6 @@
 import { Button, Space, Table } from 'antd';
 import React, { useEffect, useState } from 'react'
-import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import { ColumnsType } from 'antd/es/table';
 import DeleteItem from './components/DeleteItem';
 import EditItem from './components/EditItem';
 import AddItem from './components/AddItem';
@@ -14,12 +14,6 @@ function Item() {
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
 
-    // Setup the pagination
-    // const [pagination, setPagination] = useState<TablePaginationConfig>({
-    //     position: ["bottomCenter"],
-    //     showSizeChanger: false,
-    // })
-
     useEffect(() => {
         getListByPage();
     }, []);
@@ -29,9 +23,6 @@ function Item() {
     async function getListByPage() {
         const res = await getItemList();
         setlist(res.data as Array<Item>);
-        // setPagination({
-        //     ...pagination,
-        // });
     }
 
     async function onDelete(id: number) {
@@ -120,7 +111,6 @@ function Item() {
             </Button>
             <Table
                 rowKey={"id"}
-                // pagination={pagination}
                 dataSource={dataSource}
                 columns={columns}
             />

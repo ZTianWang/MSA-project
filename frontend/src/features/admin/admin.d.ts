@@ -1,1 +1,3 @@
-declare interface Admin { }
+declare interface Admin {
+
+}

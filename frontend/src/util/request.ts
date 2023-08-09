@@ -1,7 +1,6 @@
 /**
- * 管理axios拦截器
+ * manage axios interceptors
  */
-
 import axios from "axios";
 import { message } from 'antd'
 
@@ -9,7 +8,7 @@ const request = axios.create({
     timeout: 5000,
 })
 
-// request 拦截器
+// request interceptors
 request.interceptors.request.use((req) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -19,11 +18,10 @@ request.interceptors.request.use((req) => {
     return req;
 });
 
-// respose拦截器 + error处理
+// respose interceptors + error proceccing
 request.interceptors.response.use((res) => {
     return res.data;
 }, (err) => {
-    // 从全局中获取AppLayout中的hook方法登出
     if (err.response.status === 401) {
         window.logout();
     }

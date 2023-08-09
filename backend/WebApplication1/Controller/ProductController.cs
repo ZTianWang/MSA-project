@@ -16,15 +16,15 @@ namespace MsaBackend.Controller
         }
 
         [HttpGet]
-        //[Route("getItemList")]
+        [Route("getItemList")]
         public async Task<ActionResult<ServiceResponse<List<GetProductResDto>>>> GetProductList()
         {
             var res = await _productService.GetAllProducts();
             return res.Success ? Ok(res) : BadRequest(res);
         }
 
-        [HttpGet("{id}")]
-        //[Route("getItem/{id}")]
+        [HttpGet]
+        [Route("getItem/{id}")]
         public async Task<ActionResult<ServiceResponse<GetProductResDto>>> GetProductById(int id)
         {
             var res = await _productService.GetProductById(id);
@@ -34,7 +34,7 @@ namespace MsaBackend.Controller
         }
 
         [HttpPost]
-        //[Route("addItem")]
+        [Route("addItem")]
         public async Task<ActionResult<ServiceResponse<GetProductResDto>>> AddProduct(AddProductReqDto newProduct)
         {
             var res = await _productService.AddProduct(newProduct);
@@ -42,7 +42,7 @@ namespace MsaBackend.Controller
         }
 
         [HttpPut]
-        //[Route("updateItem")]
+        [Route("updateItem")]
         public async Task<ActionResult<ServiceResponse<GetProductResDto>>> UpdateProduct(UpdateProductReqDto updatedProduct)
         {
             var res = await _productService.UpdateProduct(updatedProduct);
@@ -51,8 +51,8 @@ namespace MsaBackend.Controller
                 : BadRequest(res);
         }
 
-        [HttpDelete("{id}")]
-        //[Route("deleteItem/{id}")]
+        [HttpDelete]
+        [Route("deleteItem/{id}")]
         public async Task<ActionResult> DeleteProductById(int id)
         {
             var res = await _productService.DeleteProductByID(id);

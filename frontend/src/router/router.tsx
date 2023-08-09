@@ -3,7 +3,7 @@
  */
 import { ReactNode, Suspense, lazy } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
-import { AuditOutlined, DashboardOutlined, LaptopOutlined, ShopOutlined, ShoppingOutlined, UnorderedListOutlined, UserOutlined, UsergroupAddOutlined, } from "@ant-design/icons";
+import { DashboardOutlined, LaptopOutlined, ShopOutlined, ShoppingOutlined, UnorderedListOutlined, UsergroupAddOutlined, } from "@ant-design/icons";
 import { Spin } from "antd";
 import AppLayout from "../components/AppLayout";
 import Login from "../features/login";
@@ -74,21 +74,6 @@ const router: IRouter[] = [
                 path: '/user/list',
                 label: 'User List',
                 icon: <UnorderedListOutlined />,
-                element: lazyLoad(<User />),
-            }
-        ]
-    },
-    {
-        path: '/admin',
-        label: 'Admin Management',
-        icon: <UserOutlined />,
-        element: <AppLayout />,
-        // items ?
-        children: [
-            {
-                path: '/admin/admin/admin/current',
-                label: 'Current Permissions',
-                icon: <AuditOutlined />,
                 element: lazyLoad(<User />),
             }
         ]

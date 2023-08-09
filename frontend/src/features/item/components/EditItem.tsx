@@ -17,7 +17,7 @@ function EditItem({ item, isModalOpen, closeModal, refresh }: Iporps) {
     useEffect(() => {
         if (isModalOpen) {
             form.resetFields();
-            // console.log(user);
+            console.log(item);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isModalOpen]);
@@ -58,22 +58,37 @@ function EditItem({ item, isModalOpen, closeModal, refresh }: Iporps) {
                 onFinish={handleSaveItem}
                 onFinishFailed={handleSubmitFailed}
             >
-                <Form.Item label="Id" name={"Id"} hidden>
+                <Form.Item label="Id" name="id" hidden>
                     <Input />
                 </Form.Item>
-                <Form.Item label="Item Name" name={"Name"}>
+                <Form.Item label="Item Name" name="name" rules={[
+                    {
+                        required: true,
+                        message: 'Please input name of item!'
+                    }
+                ]}>
                     <Input />
                 </Form.Item>
-                <Form.Item label="Price" name={"Price"}>
+                <Form.Item label="Price" name="price" rules={[
+                    {
+                        required: true,
+                        message: 'Please input price of item!'
+                    }
+                ]}>
                     <Input />
                 </Form.Item>
-                <Form.Item label="Description" name={"Description"}>
+                <Form.Item label="Description" name="description">
                     <Input />
                 </Form.Item>
-                <Form.Item label="Stock Quantity" name={"StockQuantity"}>
+                <Form.Item label="Stock Quantity" name="stockQuantity" rules={[
+                    {
+                        required: true,
+                        message: 'Please input stock quantity of item!'
+                    }
+                ]}>
                     <Input />
                 </Form.Item>
-                <Form.Item label="Sold Quantity" name={"SoldQuantity"}>
+                <Form.Item label="Sold Quantity" name="soldQuantity">
                     <Input />
                 </Form.Item>
             </Form>

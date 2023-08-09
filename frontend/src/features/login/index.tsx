@@ -35,7 +35,6 @@ function Login() {
                     <Form.Item
                         label="Account: "
                         name="account"
-                        // rule检验
                         rules={[
                             {
                                 required: true,
