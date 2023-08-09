@@ -6,7 +6,6 @@ global using Microsoft.EntityFrameworkCore;
 global using MsaBackend.Data;
 
 using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using MsaBackend.Services.AdminServices;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
@@ -63,16 +62,6 @@ services.AddDbContext<DataContext>(options =>
 // Register HttpContextAccessor to get the current HttpContext
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
-// Register Authentication
-//services.AddAuthentication("CookieAuth")
-//    .AddCookie("CookieAuth", config =>
-//    {
-//        config.Cookie.Name = "token";
-//        config.LoginPath = "/admin/login";
-//        config.AccessDeniedPath = "/admin/login";
-//    });
-
 var secretKey = builder.Configuration.GetSection("RsaKeys:PrivateKey").Value;
 var rsaKey = RSA.Create();
 rsaKey.FromXmlString(secretKey!);
@@ -88,17 +77,6 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false,
             IssuerSigningKey = new RsaSecurityKey(rsaKey)
         };
-        //options.Events = new JwtBearerEvents()
-        //{
-        //    OnMessageReceived = context =>
-        //    {
-        //        if (context.Request.Query.ContainsKey("token"))
-        //        {
-        //            context.Token = context.Request.Query["token"];
-        //        }
-        //        return Task.CompletedTask;
-        //    }
-        //};
     });
 
 // Register Authorization
@@ -133,6 +111,7 @@ if (app.Environment.IsDevelopment())
 });
 }
 app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
