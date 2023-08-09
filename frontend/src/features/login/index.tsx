@@ -8,14 +8,6 @@ function Login() {
 
     const navigate = useNavigate();
     async function login(value: Login) {
-        // doLogin(value).then((res) => {
-        //     if (res.success) {
-        //         localStorage.setItem('token', res.data.token);
-        //     } else {
-        //         message.error(res.errorMessage);
-        //     }
-        // })
-
         try {
             const res = await doLogin(value);
             if (res.success) {
@@ -38,16 +30,16 @@ function Login() {
                     labelCol={{ span: 5 }}
                     wrapperCol={{ span: 16 }}
                     style={{ maxWidth: 600 }}
-                    initialValues={{ username: '最爱白菜吖', password: '123456' }}
+                    initialValues={{ account: 'admin', password: 'admin' }}
                 >
                     <Form.Item
-                        label="Username: "
-                        name="username"
+                        label="Account: "
+                        name="account"
                         // rule检验
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your username!'
+                                message: 'Please input your account!'
                             }
                         ]}
                     >

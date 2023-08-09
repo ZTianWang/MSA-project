@@ -98,7 +98,7 @@ const router: IRouter[] = [
         element: <Login />,
     },
     {
-        path: '*',  // 返回页面未找到
+        path: '*',
         element: <NotFoundPage />,
     }
 ];

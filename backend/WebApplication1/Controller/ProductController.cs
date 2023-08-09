@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MsaBackend.Controller
 {
+    [Authorize(Policy = "AdminPolicy")]
     [ApiController]
     [Route("/products")]
     public class ProductController : ControllerBase

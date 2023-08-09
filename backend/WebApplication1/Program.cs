@@ -6,23 +6,108 @@ global using Microsoft.EntityFrameworkCore;
 global using MsaBackend.Data;
 
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using MsaBackend.Services.AdminServices;
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
 // Add services to the container.
-builder.Services.AddControllers();
+services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+    // This adds the "Authorize" button to Swagger UI
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme.",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new List<string>()
+        }
+    });
+});
 
 // Register ProductService 
-builder.Services.AddScoped<IProductService, ProductService>();
+services.AddScoped<IProductService, ProductService>();
+services.AddScoped<IAdminService, AdminService>();
 // Register AutoMapper
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+services.AddAutoMapper(typeof(Program).Assembly);
 // Register Database Context
-builder.Services.AddDbContext<DataContext>(options =>
+services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection"));
+});
+
+// Register HttpContextAccessor to get the current HttpContext
+services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
+// Register Authentication
+//services.AddAuthentication("CookieAuth")
+//    .AddCookie("CookieAuth", config =>
+//    {
+//        config.Cookie.Name = "token";
+//        config.LoginPath = "/admin/login";
+//        config.AccessDeniedPath = "/admin/login";
+//    });
+
+var secretKey = builder.Configuration.GetSection("RsaKeys:PrivateKey").Value;
+var rsaKey = RSA.Create();
+rsaKey.FromXmlString(secretKey!);
+services.AddSingleton<RSA>(rsaKey);
+
+//services.AddAuthentication("Bear").AddJwtBearer("Bear", options =>
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            IssuerSigningKey = new RsaSecurityKey(rsaKey)
+        };
+        //options.Events = new JwtBearerEvents()
+        //{
+        //    OnMessageReceived = context =>
+        //    {
+        //        if (context.Request.Query.ContainsKey("token"))
+        //        {
+        //            context.Token = context.Request.Query["token"];
+        //        }
+        //        return Task.CompletedTask;
+        //    }
+        //};
+    });
+
+// Register Authorization
+services.AddAuthorization(config =>
+{
+    config.AddPolicy("AdminPolicy", policyBuilder =>
+    {
+        policyBuilder.RequireClaim("ROle", "Admin");
+    });
 });
 
 var app = builder.Build();
@@ -39,10 +124,17 @@ app.UseStaticFiles(new StaticFileOptions()
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+
+    // This will enable the "Authorize" button at the top of the Swagger UI page
+    c.OAuthUsePkce();
+});
 }
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

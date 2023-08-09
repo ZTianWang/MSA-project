@@ -7,10 +7,12 @@
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options){ }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
         // Mapping the database table and fields to the entity class and fields
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Admin>().ToTable("admins");
             modelBuilder.Entity<Product>().ToTable("products");
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {

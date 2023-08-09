@@ -78,6 +78,7 @@
                 _mapper.Map(updatedProduct, product);
                 await _dataContext.SaveChangesAsync();
                 res.Data = _mapper.Map<GetProductResDto>(product);
+                
             }catch (Exception ex)
             {
                 res.Success = false;
