@@ -5,7 +5,7 @@ module.exports = function (app) {
     app.use(
         ["/admin", "/products"],
         createProxyMiddleware({
-            target: "https://localhost:7170",
+            target: "http://localhost:5258",
             changeOrigin: true,
         })
     );
