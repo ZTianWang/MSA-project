@@ -67,4 +67,4 @@ npm run start
 
 ## Usage
 Place watch the video below to see how to run the application:
-[https://youtu.be/9Q1Q3Z2QY4c](https://drive.google.com/file/d/1rPMUN0w66kGVV4GHn8Y39689zbWMX93p/view?usp=drive_link)https://drive.google.com/file/d/1rPMUN0w66kGVV4GHn8Y39689zbWMX93p/view?usp=drive_link
+https://drive.google.com/file/d/1rPMUN0w66kGVV4GHn8Y39689zbWMX93p/view?usp=drive_link
